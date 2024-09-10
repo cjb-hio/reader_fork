@@ -1,8 +1,9 @@
-apply from: "$rootDir/versionsPlugin.gradle"
+//apply from: "$rootDir/versionsPlugin.gradle"
 buildscript {
     apply from: "$rootDir/dependencies.gradle"
 
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         google()
         jcenter()
     }
@@ -12,12 +13,13 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
         classpath "com.google.dagger:hilt-android-gradle-plugin:$versions.hiltCoreVersion"
         classpath "com.diffplug.spotless:spotless-plugin-gradle:$versions.spotlessGradle"
-        classpath "com.github.ben-manes:gradle-versions-plugin:$versions.versionPlugin"
+        //classpath "com.github.ben-manes:gradle-versions-plugin:$versions.versionPlugin"
     }
 }
 
 allprojects {
     repositories {
+        maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
         google()
         jcenter()
         maven { url "https://jitpack.io"}

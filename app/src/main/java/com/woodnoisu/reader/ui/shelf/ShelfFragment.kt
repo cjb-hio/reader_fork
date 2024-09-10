@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_shelf.refresh_layout
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class ShelfFragment: BaseFragment() {
+class ShelfFragment : BaseFragment() {
     @Inject
     lateinit var viewModelFactory: ShelfViewModel.AssistedFactory
 
@@ -39,12 +39,12 @@ class ShelfFragment: BaseFragment() {
     /**
      * 获取界面id
      */
-    override fun getRLayout():Int=R.layout.fragment_shelf
+    override fun getRLayout(): Int = R.layout.fragment_shelf
 
     /**
      * 初始化界面
      */
-    override fun initView(){
+    override fun initView() {
         // 初始化刷新颜色
         refresh_layout.setColorSchemeResources(R.color.colorAccent)
 
@@ -59,21 +59,22 @@ class ShelfFragment: BaseFragment() {
     /**
      * 初始化监听
      */
-    override fun initListener(){
+    override fun initListener() {
         // 跳转页面事件
-        val startActivityLaunch = registerForActivityResult(ActivityResultContracts.OpenDocument()) {
-            val uri = it
-            if (context != null && uri != null) {
-                val bookModel = BookBean()
-                val name = FileUtil.uriToName(uri, activity as Context)
-                //需要加入修改
-                val path = FileUtil.getFilePathForN(uri, activity as Context)
-                //val path = uri.path?.split("raw:")?.get(1)
-                bookModel.name = name
-                bookModel.bookFilePath = path!!
-                viewModel.insertBook(bookModel)
+        val startActivityLaunch =
+            registerForActivityResult(ActivityResultContracts.OpenDocument()) {
+                val uri = it
+                if (context != null && uri != null) {
+                    val bookModel = BookBean()
+                    val name = FileUtil.uriToName(uri, activity as Context)
+                    //需要加入修改
+                    val path = FileUtil.getFilePathForN(uri, activity as Context)
+                    //val path = uri.path?.split("raw:")?.get(1)
+                    bookModel.name = name
+                    bookModel.bookFilePath = path!!
+                    viewModel.insertBook(bookModel)
+                }
             }
-        }
 
         // 书籍适配器 项目点击事件
         adapter.itemPositionClickListener = object : ShelfAdapter.OnItemPositionClickListener {
@@ -81,10 +82,6 @@ class ShelfFragment: BaseFragment() {
              * 打开项目
              */
             override fun openItem(position: Int, t: BookBean) {
-//                if (t.url.isNullOrBlank()) {
-//                    //本地阅读
-//                    t.isLocal = 1
-//                }
                 NovelReadActivity.startFromFragment(activity, t)
             }
 
@@ -107,12 +104,13 @@ class ShelfFragment: BaseFragment() {
             override fun afterTextChanged(s: Editable?) {
                 viewModel.fetchBookList(s.toString().trim())
             }
+
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
         })
 
         //点击软键盘外部，收起软键盘
-        et_search.setOnFocusChangeListener{ view, hasFocus ->
+        et_search.setOnFocusChangeListener { view, hasFocus ->
             if (!hasFocus) {
                 val manager =
                     context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -174,12 +172,12 @@ class ShelfFragment: BaseFragment() {
         })
 
         //新增书籍
-        viewModel.bookInserted.observe(viewLifecycleOwner, Observer<BookBean>{
+        viewModel.bookInserted.observe(viewLifecycleOwner, Observer<BookBean> {
             adapter.addItem(it)
         })
 
         //删除书籍
-        viewModel.bookDeleted.observe(viewLifecycleOwner, Observer<BookBean>{
+        viewModel.bookDeleted.observe(viewLifecycleOwner, Observer<BookBean> {
             adapter.removeItem(it)
         })
     }
@@ -187,7 +185,7 @@ class ShelfFragment: BaseFragment() {
     /**
      * 初始化数据
      */
-    override fun initData(){
+    override fun initData() {
         //填充默认数据
         viewModel.fetchBookList("")
     }

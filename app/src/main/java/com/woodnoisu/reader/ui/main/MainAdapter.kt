@@ -16,8 +16,8 @@ class MainAdapter(fragmentActivity: FragmentActivity)
 
     // 初始化
     init {
-        fragments.append(0, SquareFragment())
-        fragments.append(1, ShelfFragment())
+        fragments.append(0, ShelfFragment())
+        fragments.append(1, SquareFragment())
         fragments.append(2, MeFragment())
     }
 
